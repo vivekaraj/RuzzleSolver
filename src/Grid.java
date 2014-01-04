@@ -17,28 +17,41 @@ public class Grid {
 
 	public Grid() throws IOException {
 		dict = new Dictionary();
+		String disp = "";
 		for(int i = 0; i < 4; i++) {
 			String next = "";
-			String temp = "0";
-			try {
-				next = JOptionPane.showInputDialog("Please enter the " + (i+1) + "th row: ");
-				if(next.length() != 4) {
-					temp = "create exception";
-				} else {
-					for(int j = 0; j < 4; j++) {
-						if(!Character.isAlphabetic(next.charAt(j))) {
-							temp = "create exception";
+			if(i == 0) {
+				next = JOptionPane.showInputDialog("Please enter the four characters in row 1 with no spaces (example: sdfd)");
+			} else {
+				next = JOptionPane.showInputDialog(disp + "Please enter row " + (i+1));
+			}
+			String temp = "";
+			boolean done = false;
+			while(!done) {
+				try {
+					temp = "0";
+					if(next.length() != 4) {
+						temp = "create exception";
+					} else {
+						for(int j = 0; j < 4; j++) {
+							if(!Character.isAlphabetic(next.charAt(j))) {
+								temp = "create exception";
+							}
 						}
 					}
+					int temp2 = Integer.parseInt(temp);
+					done = true;
+				} catch(Exception e) {
+					next = JOptionPane.showInputDialog(disp + "Please enter a valid 4-character entry (example: asdf) for row " + (i+1));
+					done = false;
 				}
-				int temp2 = Integer.parseInt(temp);
-			} catch(Exception e) {
-				next = JOptionPane.showInputDialog("Please enter a valid row for the " + (i+1) + "th row: ");
 			}
 			next = next.toUpperCase();
 			for(int j = 0; j < 4; j++) {
 				Grid[i][j] = next.charAt(j);
+				disp += next.charAt(j) + "\t";
 			}
+			disp += "\n";
 		}
 		scanGrid();
 		sortSet();
